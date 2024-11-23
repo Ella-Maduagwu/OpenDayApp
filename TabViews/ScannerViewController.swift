@@ -1,10 +1,3 @@
-//
-//  ScannerViewController.swift
-//  OpenDayApp
-//
-//  Created by Emmanuella Maduagwu on 21/11/2024.
-//
-
 import UIKit
 import AVFoundation
 
@@ -17,40 +10,48 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         view.backgroundColor = UIColor.black
         captureSession = AVCaptureSession()
         
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
-        let videoInput: AVCaptureDeviceInput
-        
-        do {
-            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-        } catch {
-            return
-        }
-        
-        if (captureSession.canAddInput(videoInput)) {
-            captureSession.addInput(videoInput)
-        } else {
-            failed()
-            return
-        }
-        
-        let metadataOutput = AVCaptureMetadataOutput()
-        
-        if (captureSession.canAddOutput(metadataOutput)) {
-            captureSession.addOutput(metadataOutput)
+        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
+                print("DEBUG: Unable to access the camera")
+                return
+            }
+            let videoInput: AVCaptureDeviceInput
             
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr]
-        } else {
-            failed()
-            return
+            do {
+                videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
+            } catch {
+                print("DEBUG: Error setting up camera input - \(error.localizedDescription)")
+                return
+            }
+            
+            if (captureSession.canAddInput(videoInput)) {
+                captureSession.addInput(videoInput)
+            } else {
+                failed()
+                return
+            }
+            
+            let metadataOutput = AVCaptureMetadataOutput()
+            
+            if (captureSession.canAddOutput(metadataOutput)) {
+                captureSession.addOutput(metadataOutput)
+                
+                metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+                metadataOutput.metadataObjectTypes = [.qr]
+            } else {
+                failed()
+                return
+            }
+            
+            previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+            previewLayer.frame = view.layer.bounds
+            previewLayer.videoGravity = .resizeAspectFill
+            view.layer.addSublayer(previewLayer)
+            
+        //  capture session setup code here
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.captureSession?.startRunning()
         }
-        
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.frame = view.layer.bounds
-        previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
-        
-        captureSession.startRunning()
     }
     
     func failed() {
@@ -64,7 +65,9 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         super.viewWillAppear(animated)
         
         if (captureSession?.isRunning == false) {
-            captureSession.startRunning()
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession?.startRunning()
+            }
         }
     }
     
@@ -72,12 +75,16 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         super.viewWillDisappear(animated)
         
         if (captureSession?.isRunning == true) {
-            captureSession.stopRunning()
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession?.stopRunning()
+            }
         }
     }
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        captureSession.stopRunning()
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.captureSession.stopRunning()
+        }
         
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
@@ -87,7 +94,9 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
             found(code: stringValue)
         }
         
-        dismiss(animated: true)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true)
+        }
     }
     
     func found(code: String) {

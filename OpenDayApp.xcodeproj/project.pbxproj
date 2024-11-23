@@ -51,6 +51,14 @@
 		7B86362E2CEEE30A00D34824 /* AddToiletsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B86362D2CEEE30A00D34824 /* AddToiletsHelper.swift */; };
 		7B8636302CEF78E200D34824 /* QRCodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B86362F2CEF78E200D34824 /* QRCodeScannerViewController.swift */; };
 		7B8636322CEF8BBE00D34824 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8636312CEF8BBE00D34824 /* ScannerViewController.swift */; };
+		7B8636342CEFC00000D34824 /* MyCourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8636332CEFBFFF00D34824 /* MyCourseViewController.swift */; };
+		7B8636362CEFC0BB00D34824 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8636352CEFC0BB00D34824 /* HelpViewController.swift */; };
+		7B8636382CEFC1FC00D34824 /* AddUserHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8636372CEFC1FC00D34824 /* AddUserHelper.swift */; };
+		7B86363A2CF0C98800D34824 /* MenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8636392CF0C98700D34824 /* MenuHelper.swift */; };
+		7B86363C2CF0FD5100D34824 /* AddCourseInfoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B86363B2CF0FD5100D34824 /* AddCourseInfoHelper.swift */; };
+		7B86363E2CF10AE500D34824 /* Talk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B86363D2CF10AE500D34824 /* Talk.swift */; };
+		7B8636402CF10FEB00D34824 /* TalkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B86363F2CF10FEB00D34824 /* TalkTableViewCell.swift */; };
+		7B9CD43D2CF179EF00115F55 /* GeolocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9CD43C2CF179EF00115F55 /* GeolocationManager.swift */; };
 		7BB5D14C2CE5BD30002F26C9 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB5D14B2CE5BD30002F26C9 /* SectionHeaderView.swift */; };
 		7BB5D14E2CE6408A002F26C9 /* PageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB5D14D2CE6408A002F26C9 /* PageHeaderView.swift */; };
 /* End PBXBuildFile section */
@@ -83,6 +91,14 @@
 		7B86362D2CEEE30A00D34824 /* AddToiletsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToiletsHelper.swift; sourceTree = "<group>"; };
 		7B86362F2CEF78E200D34824 /* QRCodeScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerViewController.swift; sourceTree = "<group>"; };
 		7B8636312CEF8BBE00D34824 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
+		7B8636332CEFBFFF00D34824 /* MyCourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCourseViewController.swift; sourceTree = "<group>"; };
+		7B8636352CEFC0BB00D34824 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
+		7B8636372CEFC1FC00D34824 /* AddUserHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserHelper.swift; sourceTree = "<group>"; };
+		7B8636392CF0C98700D34824 /* MenuHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHelper.swift; sourceTree = "<group>"; };
+		7B86363B2CF0FD5100D34824 /* AddCourseInfoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCourseInfoHelper.swift; sourceTree = "<group>"; };
+		7B86363D2CF10AE500D34824 /* Talk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Talk.swift; sourceTree = "<group>"; };
+		7B86363F2CF10FEB00D34824 /* TalkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkTableViewCell.swift; sourceTree = "<group>"; };
+		7B9CD43C2CF179EF00115F55 /* GeolocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeolocationManager.swift; sourceTree = "<group>"; };
 		7BB5D14B2CE5BD30002F26C9 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		7BB5D14D2CE6408A002F26C9 /* PageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -165,6 +181,8 @@
 				7B8636232CECAF9F00D34824 /* RoomsViewController.swift */,
 				7B86362F2CEF78E200D34824 /* QRCodeScannerViewController.swift */,
 				7B8636312CEF8BBE00D34824 /* ScannerViewController.swift */,
+				7B8636332CEFBFFF00D34824 /* MyCourseViewController.swift */,
+				7B8636352CEFC0BB00D34824 /* HelpViewController.swift */,
 			);
 			path = TabViews;
 			sourceTree = "<group>";
@@ -177,6 +195,7 @@
 				7B8636192CEC22C700D34824 /* Buildings.swift */,
 				7B8636292CEEBCF700D34824 /* Room.swift */,
 				7B86362B2CEEC54800D34824 /* BuildingStruct.swift */,
+				7B86363D2CF10AE500D34824 /* Talk.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -186,8 +205,13 @@
 			children = (
 				7B4BDADF2CE4C9EE005661A6 /* Date+Extensions.swift */,
 				7B8636272CEE7F7000D34824 /* FirestoreHelper.swift */,
+				7B86363B2CF0FD5100D34824 /* AddCourseInfoHelper.swift */,
 				7B8636252CEE76EE00D34824 /* FirestoreUpdater.swift */,
 				7B86362D2CEEE30A00D34824 /* AddToiletsHelper.swift */,
+				7B8636372CEFC1FC00D34824 /* AddUserHelper.swift */,
+				7B8636392CF0C98700D34824 /* MenuHelper.swift */,
+				7B86363F2CF10FEB00D34824 /* TalkTableViewCell.swift */,
+				7B9CD43C2CF179EF00115F55 /* GeolocationManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -291,22 +315,30 @@
 				7BB5D14E2CE6408A002F26C9 /* PageHeaderView.swift in Sources */,
 				7B8636282CEE7F7000D34824 /* FirestoreHelper.swift in Sources */,
 				7BB5D14C2CE5BD30002F26C9 /* SectionHeaderView.swift in Sources */,
+				7B86363A2CF0C98800D34824 /* MenuHelper.swift in Sources */,
 				7B4BDAE22CE4F8EE005661A6 /* Event.swift in Sources */,
 				7B8636242CECAF9F00D34824 /* RoomsViewController.swift in Sources */,
 				7B3341BB2CDE6279008C339D /* ViewController.swift in Sources */,
 				7B86362E2CEEE30A00D34824 /* AddToiletsHelper.swift in Sources */,
 				7B86362C2CEEC54800D34824 /* BuildingStruct.swift in Sources */,
+				7B9CD43D2CF179EF00115F55 /* GeolocationManager.swift in Sources */,
 				7B4BDADC2CE4C0E1005661A6 /* TimetableViewClass.swift in Sources */,
 				7B4BDAE02CE4C9EE005661A6 /* Date+Extensions.swift in Sources */,
 				7B4BDAE42CE4F928005661A6 /* EventSection.swift in Sources */,
 				7B8636262CEE76EE00D34824 /* FirestoreUpdater.swift in Sources */,
 				7B8636202CEC458500D34824 /* AccessibilityViewController.swift in Sources */,
+				7B86363C2CF0FD5100D34824 /* AddCourseInfoHelper.swift in Sources */,
+				7B8636342CEFC00000D34824 /* MyCourseViewController.swift in Sources */,
+				7B8636362CEFC0BB00D34824 /* HelpViewController.swift in Sources */,
 				7B8636222CECAE9600D34824 /* BuildingCollectionViewCell.swift in Sources */,
 				7B7AE35B2CDFB27700BF07E2 /* SignOnButton.swift in Sources */,
 				7B3341B72CDE6279008C339D /* AppDelegate.swift in Sources */,
+				7B86363E2CF10AE500D34824 /* Talk.swift in Sources */,
 				7B8636322CEF8BBE00D34824 /* ScannerViewController.swift in Sources */,
 				7B7AE3592CDFAF9500BF07E2 /* customeTextField.swift in Sources */,
+				7B8636382CEFC1FC00D34824 /* AddUserHelper.swift in Sources */,
 				7B8636302CEF78E200D34824 /* QRCodeScannerViewController.swift in Sources */,
+				7B8636402CF10FEB00D34824 /* TalkTableViewCell.swift in Sources */,
 				7B4BDAE82CE552BC005661A6 /* EventTableViewCell.swift in Sources */,
 				7B86361A2CEC22C700D34824 /* Buildings.swift in Sources */,
 				7B86362A2CEEBCF700D34824 /* Room.swift in Sources */,
@@ -479,7 +511,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -507,7 +539,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

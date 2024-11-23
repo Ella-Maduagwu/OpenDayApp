@@ -1,54 +1,34 @@
-//
-//  AddToiletsHelper.swift
-//  OpenDayApp
-//
-//  Created by Emmanuella Maduagwu on 21/11/2024.
-//
-
 import FirebaseFirestore
+import Foundation
 
-func addToiletsToAllBuildings() {
-    let db = Firestore.firestore() // Firestore reference
-    let buildingsCollection = db.collection("buildings")
+ func ensureFacilitiesExistInBuildings() {
+    let requiredFacilities = ["toilets", "elevators", "cafeterias"]
+    let db = Firestore.firestore()
 
-    // Define the toilets to be added
-    let toilets = [
-        ("Toilet_A", "Toilet A"),
-        ("Toilet_B", "Toilet B"),
-        ("Toilet_C", "Toilet C")
-    ]
-
-    // Get all building documents
-    buildingsCollection.getDocuments { (querySnapshot, error) in
-        if let error = error {
-            print("Error fetching buildings: \(error.localizedDescription)")
-            return
-        }
-
-        guard let documents = querySnapshot?.documents else {
-            print("No buildings found.")
+    db.collection("buildings").getDocuments { (querySnapshot, error) in
+        guard let documents = querySnapshot?.documents, error == nil else {
+            print("Error fetching buildings: \(error?.localizedDescription ?? "Unknown error")")
             return
         }
 
         for document in documents {
-            let buildingID = document.documentID
-            let buildingName = document.data()["name"] as? String ?? "Unknown Building"
+            var facilitiesToUpdate: [String: Any] = [:]
 
-            // Add toilets to each building
-            for (toiletID, toiletName) in toilets {
-                let roomDocument = buildingsCollection.document(buildingID).collection("rooms").document(toiletID)
+            for facility in requiredFacilities {
+                // Check if the facility exists in the current building document
+                if document.data()[facility] == nil {
+                    // Facility is missing, add it with a default value (e.g., false)
+                    facilitiesToUpdate[facility] = true
+                }
+            }
 
-                roomDocument.getDocument { (roomDoc, roomError) in
-                    if let roomDoc = roomDoc, roomDoc.exists {
-                        print("\(toiletName) already exists in \(buildingName). Skipping...")
+            // If we added any missing facilities, update the Firestore document
+            if !facilitiesToUpdate.isEmpty {
+                db.collection("buildings").document(document.documentID).updateData(facilitiesToUpdate) { error in
+                    if let error = error {
+                        print("Error updating building \(document.documentID) with missing facilities: \(error.localizedDescription)")
                     } else {
-                        roomDocument.setData(["name": toiletName]) { roomErr in
-                            if let roomErr = roomErr {
-                                print("Error adding \(toiletName) to \(buildingName): \(roomErr.localizedDescription)")
-                            } else {
-                                print("\(toiletName) successfully added to \(buildingName).")
-                            }
-                        }
+                        print("Building \(document.documentID) successfully updated with missing facilities.")
                     }
                 }
             }
