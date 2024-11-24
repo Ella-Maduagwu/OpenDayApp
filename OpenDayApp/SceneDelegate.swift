@@ -49,17 +49,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
 
     func changeRootViewController(to viewController: UIViewController, animated: Bool = true) {
-        guard let windowScene = (UIApplication.shared.connectedScenes.first as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
+        guard let windowScene = (UIApplication.shared.connectedScenes.first as? UIWindowScene),
+              let sceneDelegate = windowScene.delegate as? SceneDelegate,
+              let window = sceneDelegate.window else {
+            print("DEBUG: Window or SceneDelegate is nil")
+            return
+        }
+        
         window.rootViewController = viewController
 
         if animated {
-            window.makeKeyAndVisible()
-            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
-        } else {
-            window.makeKeyAndVisible()
+            UIView.transition(with: window,
+                              duration: 0.3,
+                              options: .transitionCrossDissolve,
+                              animations: nil,
+                              completion: nil)
         }
+        window.makeKeyAndVisible()
     }
+
 
 
 

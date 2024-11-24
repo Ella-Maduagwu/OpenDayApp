@@ -19,12 +19,14 @@ class AccessibilityViewController: UIViewController {
         setupAccessibility() // Set up accessibility for better user experience
         setupHeader()
         fetchBuildings() // Fetch building names from Firestore
+        // Set up geofencing using Firestore and buildings collection
+           GeolocationManager.shared.setupGeofencing(for: db, collection: "buildings")
         
-        // Set up button actions
-            toiletsButton.addTarget(self, action: #selector(navigateToNearestBuildingWithFacility(_:)), for: .touchUpInside)
-            elevatorButton.addTarget(self, action: #selector(navigateToNearestBuildingWithFacility(_:)), for: .touchUpInside)
-            cafeteriaButton.addTarget(self, action: #selector(navigateToNearestBuildingWithFacility(_:)), for: .touchUpInside)
         
+        //sets up button action
+        toiletsButton.addTarget(self, action: #selector(navigateToNearestBuildingWithFacility(_:)), for: .touchUpInside)
+        elevatorButton.addTarget(self, action: #selector(navigateToNearestBuildingWithFacility(_:)), for: .touchUpInside)
+        cafeteriaButton.addTarget(self, action: #selector(navigateToNearestBuildingWithFacility(_:)), for: .touchUpInside)
     }
     
     /// Configures the collection view layout, delegate, and data source.
@@ -109,61 +111,67 @@ class AccessibilityViewController: UIViewController {
         }
     }
     
-    /// Handles navigation to the nearest building with the specified facility.
-        @objc private func navigateToNearestBuildingWithFacility(_ sender: UIButton) {
-            let facility: String
-            switch sender {
-            case toiletsButton:
-                facility = "toilets"
-            case elevatorButton:
-                facility = "elevator"
-            case cafeteriaButton:
-                facility = "cafeteria"
-            default:
-                return
-            }
-
-            findNearestBuildingWithFacility(facility)
-        }
-
-    
-    /// Finds the nearest building with the specified feature.
-    private func findNearestBuildingWithFacility(_ facility: String) {
-        guard let currentLocation = GeolocationManager.shared.currentLocation else {
-            print("DEBUG: Current location is not available.")
+     /// Handles navigation to the nearest building with the specified facility.
+    @objc private func navigateToNearestBuildingWithFacility(_ sender: UIButton) {
+        let facility: String
+        switch sender {
+        case toiletsButton:
+            facility = "toilets"
+            print("Toilets button pressed")
+        case elevatorButton:
+            facility = "elevator"
+            print("Elevator button pressed")
+        case cafeteriaButton:
+            facility = "cafeteria"
+            print("Cafeteria button pressed")
+        default:
+            print("Unknown button pressed")
             return
         }
-        
-        // Fetch buildings with the given feature from Firestore and find the nearest one
-        db.collection("buildings").whereField("features", arrayContains: facility).getDocuments { [weak self] (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents, error == nil else {
-                print("DEBUG: Error fetching buildings with feature: \(facility) - \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            
-            var nearestBuilding: (buildingName: String, distance: CLLocationDistance, coordinate: CLLocationCoordinate2D)? = nil
-            
-            for document in documents {
-                if let name = document.data()["name"] as? String,
-                   let latitude = document.data()["latitude"] as? Double,
-                   let longitude = document.data()["longitude"] as? Double {
-                    
-                    let buildingLocation = CLLocation(latitude: latitude, longitude: longitude)
-                    let distance = currentLocation.distance(from: buildingLocation)
-                    
-                    if nearestBuilding == nil || distance < nearestBuilding!.distance {
-                        nearestBuilding = (name, distance, CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
-                    }
-                }
-            }
-            
-            if let nearest = nearestBuilding {
-                self?.navigateToBuilding(buildingName: nearest.buildingName, coordinate: nearest.coordinate)
-            } else {
-                print("DEBUG: No building found with feature: \(facility)")
-            }
-        }
+        findNearestBuildingWithFacility(facility)
     }
+    
+    
+    /// Finds the nearest building with the specified feature.
+       private func findNearestBuildingWithFacility(_ facility: String) {
+           guard let currentLocation = GeolocationManager.shared.currentLocation else {
+               print("DEBUG: Current location is not available. Please enable location services.")
+               showAlert(title: "Location Error", message: "Unable to determine your current location. Please ensure that location services are enabled and try again.")
+               return
+           
+
+           }
+           
+           // Fetch buildings with the given feature from Firestore and find the nearest one
+           db.collection("buildings").whereField("features", arrayContains: facility).getDocuments { [weak self] (querySnapshot, error) in
+               guard let documents = querySnapshot?.documents, error == nil else {
+                   print("DEBUG: Error fetching buildings with feature: \(facility) - \(error?.localizedDescription ?? "Unknown error")")
+                   return
+               }
+               
+               var nearestBuilding: (buildingName: String, distance: CLLocationDistance, coordinate: CLLocationCoordinate2D)? = nil
+               
+               for document in documents {
+                   if let name = document.data()["name"] as? String,
+                      let latitude = document.data()["latitude"] as? Double,
+                      let longitude = document.data()["longitude"] as? Double {
+                       
+                       let buildingLocation = CLLocation(latitude: latitude, longitude: longitude)
+                       let distance = currentLocation.distance(from: buildingLocation)
+                       
+                       if nearestBuilding == nil || distance < nearestBuilding!.distance {
+                           nearestBuilding = (name, distance, CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                       }
+                   }
+               }
+               
+               if let nearest = nearestBuilding {
+                   self?.navigateToBuilding(buildingName: nearest.buildingName, coordinate: nearest.coordinate)
+               } else {
+                   print("DEBUG: No building found with feature: \(facility)")
+               }
+           }
+       }
 
     
     private func navigateToBuilding(buildingName: String, coordinate: CLLocationCoordinate2D) {
@@ -207,4 +215,17 @@ extension AccessibilityViewController: UICollectionViewDelegate, UICollectionVie
         roomsVC.buildingName = selectedBuilding
         navigationController?.pushViewController(roomsVC, animated: true) // Trigger segue to RoomsViewController
     }
+    
+    /// Shows an alert with a given title and message.
+    /// - Parameters:
+    ///   - title: The title of the alert.
+    ///   - message: The message body of the alert.
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
+    }
+
 }

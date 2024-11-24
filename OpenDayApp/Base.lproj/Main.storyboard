@@ -44,17 +44,17 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFu-Bg-6Zd">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="loginButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFu-Bg-6Zd">
                                 <rect key="frame" x="270" y="502" width="57" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="loginButton"/>
                                 <color key="tintColor" systemColor="systemBlueColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Next">
                                     <fontDescription key="titleFontDescription" name="NotoSansMyanmar-Regular" family="Noto Sans Myanmar" pointSize="16"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="loginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zo9-dw-Zb2"/>
-                                    <segue destination="kDJ-YW-Leo" kind="show" id="ZPT-dE-V13"/>
+                                    <action selector="loginButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ziK-8f-9DY"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mts-RS-guZ" customClass="SignOnButton" customModule="OpenDayApp" customModuleProvider="target">
@@ -91,6 +91,7 @@
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="GWN-9I-1Ms" id="nug-B2-vW9"/>
+                        <outlet property="loginButton" destination="RFu-Bg-6Zd" id="hUg-JU-LNL"/>
                         <outlet property="passwordTextField" destination="rC9-oH-70u" id="o2o-d0-UX3"/>
                         <outlet property="signInLabel" destination="Jgc-vm-ybh" id="DQH-sn-vaP"/>
                         <outlet property="titleLabel" destination="8fH-uB-pjJ" id="Lnp-qQ-039"/>
@@ -533,9 +534,6 @@
             <point key="canvasLocation" x="-673" y="1112"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="ZPT-dE-V13"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" systemColor="systemBackgroundColor"/>
     <resources>
         <image name="accessibility" catalog="system" width="128" height="123"/>
