@@ -11,6 +11,7 @@ class RoomsViewController: UIViewController, CLLocationManagerDelegate  {
     let db = Firestore.firestore()
     var buildingName: String?
     let locationManager = CLLocationManager() // line to declare locationManager
+    static var selectedRoom : Room? // static property to track the selected room
 
     
     override func viewDidLoad() {
@@ -161,6 +162,7 @@ class RoomsViewController: UIViewController, CLLocationManagerDelegate  {
     /// Fetch rooms based on the selected building name.
     private func fetchRoomsForBuilding(buildingID: String) {
         let buildingDocument = db.collection("buildings").document(buildingID)
+        
         let roomsCollection = buildingDocument.collection("rooms")
 
         print("DEBUG: Fetching rooms for building with ID: \(buildingID)")
@@ -224,6 +226,7 @@ extension RoomsViewController: UITableViewDelegate, UITableViewDataSource {
     /// Handles row selection and initiates turn-by-turn navigation.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let room = rooms[indexPath.row]
+        RoomsViewController.selectedRoom = room 
         initiateNavigation(to: room)
     }
     
@@ -253,23 +256,28 @@ extension RoomsViewController {
                 print("DEBUG: Building document does not contain valid coordinates.")
                 return
             }
-
-            // Use the building's coordinates to start navigation
+            
+        //set up geofencing for the building
+           // Use the building's coordinates to open map and start navigation
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            GeolocationManager.shared.setupGeofencing()
+            
             let placemark = MKPlacemark(coordinate: coordinate)
             let mapItem = MKMapItem(placemark: placemark)
             mapItem.name = room.name
             let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking]
             mapItem.openInMaps(launchOptions: launchOptions)
             
+            
             // Notify the user to scan QR codes when they arrive at the building
             let alert = UIAlertController(
                 title: "Indoor Navigation",
-                message: "Arrived at the building? Use the QR code scanner to locate the exact room.",
+                message: "if you arrived at the building? iBeacon signalling should start now.",
                 preferredStyle: .alert
             )
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(alert, animated: true)
+
         }
     }
 

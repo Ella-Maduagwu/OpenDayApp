@@ -11,7 +11,7 @@ class AddCourseInfoHelper {
     private let db = Firestore.firestore() // Firestore reference
     static let shared = AddCourseInfoHelper() 
 
-        /// Updates all existing courses in the Firestore "courses" collection to add `infoLink` and `briefDescription` fields.
+        // Updates all existing courses in the Firestore "courses" collection to add `infoLink` and `briefDescription` fields.
         func addDetailsToAllCourses() {
             db.collection("courses").getDocuments { [weak self] (querySnapshot, error) in
                 guard let documents = querySnapshot?.documents, error == nil else {

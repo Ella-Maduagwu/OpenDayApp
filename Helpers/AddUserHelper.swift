@@ -7,9 +7,9 @@ class AddUserHelper {
     private let db = Firestore.firestore() // Firestore reference
 
     // MARK: Hardcoded Details
-    private let hardcodedEmail = "karen.bell@aru.ac.uk"
+    private let hardcodedEmail = "ams335@student.aru.ac.uk"
     private let hardcodedPassword = "ELGZFO"
-    private let hardcodedCourseName = "Business"
+    private let hardcodedCourseName = "Computer Games"
 
     // Function to create a new user, assign a course, and populate Firestore using hardcoded details
     func createUser() {
@@ -99,4 +99,7 @@ class AddUserHelper {
             }
         }
     }
+    
+    
+    
 }

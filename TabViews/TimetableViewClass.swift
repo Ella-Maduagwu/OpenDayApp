@@ -25,7 +25,7 @@ class TimetableViewClass: UIViewController, UITableViewDataSource, UITableViewDe
         loadEventData()
         tableView.register(SectionHeaderView.self, forHeaderFooterViewReuseIdentifier: SectionHeaderView.reuseIdentifier)
         setupHeader()
-       //ensureFacilitiesExistInBuildings()
+       
         
     }
 

@@ -55,7 +55,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print("DEBUG: Window or SceneDelegate is nil")
             return
         }
-        
         window.rootViewController = viewController
 
         if animated {
@@ -67,9 +66,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         window.makeKeyAndVisible()
     }
-
-
-
-
 }
 

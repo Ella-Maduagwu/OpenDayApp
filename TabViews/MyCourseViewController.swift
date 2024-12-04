@@ -239,8 +239,7 @@ class MyCourseViewController: UIViewController, UITableViewDelegate, UITableView
            // MARK: - Geofencing Logic
            private func setupGeofencing() {
                geolocationManager = GeolocationManager.shared
-              // geolocationManager?.delegate = self
-               geolocationManager?.setupGeofencing(for: db, collection: "buildings")
+               geolocationManager?.setupGeofencing()
               
            }
            

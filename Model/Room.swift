@@ -6,18 +6,24 @@
 //
 
 import Foundation
+import CoreLocation
 typealias RoomData = [String: Any]
 struct Room {
-    var id: String
     var name: String
     var buildingID: String
-
+    let minor : CLBeaconMinorValue
+    let major : CLBeaconMajorValue
+    
     init?(data: RoomData, buildingID: String) {
-        guard let name = data["name"] as? String else {
+        guard let name = data["name"] as? String,
+        let minorValue = data["minor"] as? Int,
+        let majorValue = data["major"] as? Int else {
             return nil
         }
-        self.id = UUID().uuidString
         self.name = name
         self.buildingID = buildingID
+        self.minor = CLBeaconMinorValue(minorValue)
+        self.major = CLBeaconMajorValue(majorValue)
     }
 }
+

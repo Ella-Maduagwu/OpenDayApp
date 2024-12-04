@@ -19,6 +19,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        
+
     }
     
     // MARK: - Setup Methods
@@ -74,21 +76,32 @@ class ViewController: UIViewController, UITextFieldDelegate {
           }
     
     @IBAction func anonymousLoginButtonTapped(_ sender: UIButton) {
-        guard !isSigningIn else { return }
-        
+        print("DEBUG: Anonymous login button tapped.")
+        guard !isSigningIn else {
+            print("DEBUG: Sign-in is already in progress.")
+            return
+        }
+
         isSigningIn = true
+        // `Attempt to sign in anonymously
         Auth.auth().signInAnonymously { [weak self] (authResult, error) in
             guard let self = self else { return }
+            print("DEBUG: Sign-in completion handler called.")
             self.isSigningIn = false
-            if let error = error {
-                self.showAlert(title: "Login Error", message: error.localizedDescription)
+            if let error = error { // handle any errors that occur
+                print("DEBUG: Authentication error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Login Error", message: error.localizedDescription)
+                }
             } else {
-                self.navigateToMainTabBar()
-                print("DEBUG: user got in anonymously .")
-
+                print("DEBUG: Anonymous sign-in successful.")
+                DispatchQueue.main.async {
+                    self.navigateToMainTabBar()// change windows
+                }
             }
         }
     }
+
 
     // MARK: - Helper Methods
 
@@ -141,7 +154,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
-            // Ensure that we're able to instantiate the tab bar controller from storyboard
+            // Ensure that ability to instantiate the tab bar controller from storyboard
             if let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController") as? UITabBarController {
                 print("DEBUG: Successfully instantiated Main Tab Bar Controller")
 
