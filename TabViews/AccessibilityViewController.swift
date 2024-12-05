@@ -53,7 +53,7 @@ class AccessibilityViewController: UIViewController {
     
     
     
-    /// Fetches buildings from Firestore to populate the collection view.
+    // Fetches buildings from Firestore to populate the collection view.
     private func fetchBuildings() {
         let buildingsCollection = db.collection("buildings")
         
@@ -142,7 +142,7 @@ class AccessibilityViewController: UIViewController {
         }
         
         // Fetch buildings with the given feature from Firestore and find the nearest one
-        db.collection("buildings").whereField("features", arrayContains: facility).getDocuments { [weak self] (querySnapshot, error) in
+        db.collection("buildings").whereField(facility, isEqualTo: true).getDocuments { [weak self] (querySnapshot, error) in
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
                 print("DEBUG: Error fetching buildings with feature: \(facility) - \(error?.localizedDescription ?? "Unknown error")")
                 self?.showAlert(title: " facility not found", message: " no building with \(facility)found nearby." )

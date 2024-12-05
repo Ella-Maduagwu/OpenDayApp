@@ -5,7 +5,6 @@ import Foundation
 func ensureFacilitiesAndBeaconsExistInBuildings() {
     let requiredFacilities = ["toilets", "elevators", "cafeterias"]
     let db = Firestore.firestore()
-    let campusUUID = UUID(uuidString: "8D5DB264-E6E0-49EC-A1DD-A8E8080E1F43")
     
     // helper function to generate major and minor values
     func generateMajorMinorValues() -> ( CLBeaconMajorValue, CLBeaconMinorValue){

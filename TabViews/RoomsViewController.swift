@@ -79,7 +79,7 @@ class RoomsViewController: UIViewController, CLLocationManagerDelegate  {
 
     
     
-    /// Sets up the header for the page with the title.
+    // Sets up the header for the page with the title.
     private func setupHeader() {
         let headerLabel = UILabel()
         headerLabel.textAlignment = .center
@@ -94,7 +94,7 @@ class RoomsViewController: UIViewController, CLLocationManagerDelegate  {
         ])
     }
     
-    /// Sets up the footer for the page with instructions.
+    // Sets up the footer for the page with instructions.
     private func setupFooter() {
         let footerLabel = UILabel()
         footerLabel.text = "Tap any room to navigate to it."
@@ -159,7 +159,7 @@ class RoomsViewController: UIViewController, CLLocationManagerDelegate  {
               tableView.separatorStyle = .none
     }
 
-    /// Fetch rooms based on the selected building name.
+    // Fetch rooms based on the selected building name.
     private func fetchRoomsForBuilding(buildingID: String) {
         let buildingDocument = db.collection("buildings").document(buildingID)
         
@@ -180,7 +180,7 @@ class RoomsViewController: UIViewController, CLLocationManagerDelegate  {
                 return
             }
 
-            self.rooms.removeAll()
+            self.rooms.removeAll() // clear the array to remove any previous input
 
             for document in documents {
                 if let roomData = Room(data: document.data(), buildingID: buildingID) {
@@ -194,7 +194,7 @@ class RoomsViewController: UIViewController, CLLocationManagerDelegate  {
 
             DispatchQueue.main.async {
                 print("DEBUG: Reloading tableView with \(self.rooms.count) rooms.")
-                self.tableView.reloadData()
+                self.tableView.reloadData() // reload the table view to display the rooms
             }
         }
     }
@@ -269,7 +269,7 @@ extension RoomsViewController {
             mapItem.openInMaps(launchOptions: launchOptions)
             
             
-            // Notify the user to scan QR codes when they arrive at the building
+            // Notify the user about beacon scanning when they arrive at the building
             let alert = UIAlertController(
                 title: "Indoor Navigation",
                 message: "if you arrived at the building? iBeacon signalling should start now.",

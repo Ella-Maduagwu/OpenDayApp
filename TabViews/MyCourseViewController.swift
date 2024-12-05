@@ -23,7 +23,7 @@ class MyCourseViewController: UIViewController, UITableViewDelegate, UITableView
         setupView()
         setupTableView()
         fetchUserCourse()
-        setupGeofencing()
+       
     }
     
     // MARK: - View Setup
@@ -134,20 +134,6 @@ class MyCourseViewController: UIViewController, UITableViewDelegate, UITableView
                    descriptionTextView.topAnchor.constraint(equalTo: courseDetailContainerView.topAnchor, constant: 16)
                ])
                
-               // Add the "View More Info" button inside the container view
-               let moreInfoButton = UIButton(type: .system)
-               moreInfoButton.setTitle("View More Info", for: .normal)
-               moreInfoButton.addTarget(self, action: #selector(viewMoreInfoButtonTapped(_:)), for: .touchUpInside)
-               moreInfoButton.translatesAutoresizingMaskIntoConstraints = false
-               
-               courseDetailContainerView.addSubview(moreInfoButton)
-               
-               NSLayoutConstraint.activate([
-                   moreInfoButton.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 16),
-                   moreInfoButton.centerXAnchor.constraint(equalTo: courseDetailContainerView.centerXAnchor),
-                   moreInfoButton.bottomAnchor.constraint(equalTo: courseDetailContainerView.bottomAnchor, constant: -16)
-               ])
-               
                courseDetailContainerView.isHidden = false
            }
     
@@ -188,6 +174,7 @@ class MyCourseViewController: UIViewController, UITableViewDelegate, UITableView
                    
                    guard let documents = querySnapshot?.documents else {
                        print("No talks available for the course.")
+                       self?.showAlert(title: " No talk for this course", message: " no talks or vents for this course" )
                        return
                    }
                    
@@ -207,17 +194,16 @@ class MyCourseViewController: UIViewController, UITableViewDelegate, UITableView
                    }
                }
            }
-           
-           // MARK: - Navigation to External Course Info
-           @objc func viewMoreInfoButtonTapped(_ sender: UIButton) {
-               guard let infoLink = courseInfoLink, let url = URL(string: infoLink) else {
-                   print("Invalid or missing URL for course information.")
-                   return
-               }
-               let safariVC = SFSafariViewController(url: url)
-               present(safariVC, animated: true)
-           }
-           
+    // MARK: - Navigation to External Course Info
+    @IBAction func moreInfoButton(_ sender: Any) {
+        guard let infoLink = courseInfoLink, let url = URL(string: infoLink) else {
+            print("Invalid or missing URL for course information.")
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
+    }
+   
            // MARK: - Table View Data Source Methods
            func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
                return talks.count
@@ -236,34 +222,6 @@ class MyCourseViewController: UIViewController, UITableViewDelegate, UITableView
                return cell
            }
            
-           // MARK: - Geofencing Logic
-           private func setupGeofencing() {
-               geolocationManager = GeolocationManager.shared
-               geolocationManager?.setupGeofencing()
-              
-           }
-           
-           func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-               guard let circularRegion = region as? CLCircularRegion else { return }
-               sendNotification(title: "Welcome!", body: "You are near the building: \(circularRegion.identifier).")
-               fetchScheduledTalksForBuilding(buildingName: circularRegion.identifier)
-           }
-           
-           func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-               guard let circularRegion = region as? CLCircularRegion else { return }
-               sendNotification(title: "Goodbye!", body: "You have left the building: \(circularRegion.identifier).")
-           }
-           
-           // MARK: - Central Notification Method
-           private func sendNotification(title: String, body: String) {
-               let content = UNMutableNotificationContent()
-               content.title = title
-               content.body = body
-               content.sound = .default
-               
-               let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
-               UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-           }
            
            // MARK: - Fetch Scheduled Talks for Building
            private func fetchScheduledTalksForBuilding(buildingName: String) {
@@ -278,6 +236,11 @@ class MyCourseViewController: UIViewController, UITableViewDelegate, UITableView
                    }
                }
            }
+    // Presents an alert to the user.
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    }
            
            private func notifyUserOfUpcomingTalk(talk: Talk) {
                let content = UNMutableNotificationContent()

@@ -5,6 +5,7 @@ import FirebaseFirestore
 
 // A singleton class responsible for managing geolocation, geofencing, and beacon monitoring.
 class GeolocationManager: NSObject, CLLocationManagerDelegate {
+    let CampusUUID = UUID(uuidString: "8D5DB264-E6E0-49EC-A1DD-A8E8080E1F43")
     
     // Shared instance of GeolocationManager to ensure a single point of access
     static let shared = GeolocationManager()
@@ -34,25 +35,19 @@ class GeolocationManager: NSObject, CLLocationManagerDelegate {
 
     // Configures the CLLocationManager and requests necessary permissions.
     private func setupLocationManager() {
-        guard CLLocationManager.locationServicesEnabled() else {
-            print("DEBUG: Location services are not enabled on this device.")
-            return
-        }
 
         locationManager = CLLocationManager()
         locationManager?.delegate = self
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         locationManager?.distanceFilter = 10
-
-        // Request authorization if status is not determined
-        if locationManager?.authorizationStatus == .notDetermined {
+        
             locationManager?.requestWhenInUseAuthorization()
-        }
+        
     }
     //MARK: - Beacon Ranging
     // Starts beacon ranging for a specific major and minor combination.
         func startBeaconRanging(for major: CLBeaconMajorValue, minor: CLBeaconMinorValue) {
-            guard let campusUUID = UUID(uuidString: "8D5DB264-E6E0-49EC-A1DD-A8E8080E1F43") else {
+            guard let campusUUID = CampusUUID else {
                 print("DEBUG: Invalid campus UUID.")
                 return
             }
@@ -128,7 +123,7 @@ class GeolocationManager: NSObject, CLLocationManagerDelegate {
               let latitude = data["latitude"] as? Double,
               let longitude = data["longitude"] as? Double else { return nil }
 
-        let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: 200, identifier: name)
+        let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: 100, identifier: name)
         region.notifyOnEntry = true
         region.notifyOnExit = true
         print("DEBUG: Geofence created for \(name)")
@@ -165,20 +160,21 @@ class GeolocationManager: NSObject, CLLocationManagerDelegate {
                 return
             }
 
-            let campusUUID = UUID(uuidString: "8D5DB264-E6E0-49EC-A1DD-A8E8080E1F43")
-            guard let campusUUID = campusUUID,
+           
+            guard let campusUUID = self?.CampusUUID,
                   let majorValue = data["major"] as? CLBeaconMajorValue else {
                 print("DEBUG: Invalid beacon data.")
                 return
             }
+            // create a beacon region
 
             let beaconRegion = CLBeaconRegion(uuid: campusUUID, major: majorValue, identifier: buildingName)
             beaconRegion.notifyOnEntry = true
             beaconRegion.notifyOnExit = true
 
-            self?.beaconRegions.append(beaconRegion)
-            self?.locationManager?.startMonitoring(for: beaconRegion)
-            self?.locationManager?.startRangingBeacons(satisfying: CLBeaconIdentityConstraint(uuid: campusUUID, major: majorValue))
+            self?.beaconRegions.append(beaconRegion)// add the beacon to the list of monitored beacons
+            self?.locationManager?.startMonitoring(for: beaconRegion)// start monitoring for it
+            self?.locationManager?.startRangingBeacons(satisfying: CLBeaconIdentityConstraint(uuid: campusUUID, major: majorValue))// start ranging for the region
             print("DEBUG: Beacon region created for \(buildingName).")
         }
     }

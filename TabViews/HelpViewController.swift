@@ -2,7 +2,7 @@
 //  HelpViewController.swift
 //  OpenDayApp
 //
-//  Created by Emmanuella Maduagwu on 21/11/2024.
+
 //
 
 import UIKit
@@ -18,7 +18,7 @@ class HelpViewController: UIViewController, MFMailComposeViewControllerDelegate 
         self.title = "Help"
     }
 
-    /// Action to handle sending an email.
+    // Action to handle sending an email.
     @IBAction func emailButtonTapped(_ sender: UIButton) {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
@@ -34,12 +34,12 @@ class HelpViewController: UIViewController, MFMailComposeViewControllerDelegate 
         }
     }
 
-    /// MFMailComposeViewControllerDelegate method to handle mail completion.
+    // MFMailComposeViewControllerDelegate method to handle mail completion.
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
     }
 
-    /// Action to handle making a phone call.
+    // Action to handle making a phone call.
     @IBAction func phoneButtonTapped(_ sender: UIButton) {
         if let phoneURL = URL(string: "tel://+1234567890"), UIApplication.shared.canOpenURL(phoneURL) {
             UIApplication.shared.open(phoneURL)
@@ -50,9 +50,9 @@ class HelpViewController: UIViewController, MFMailComposeViewControllerDelegate 
         }
     }
 
-    /// Placeholder for live chat button.
+    // Placeholder for live chat button.
     @IBAction func liveChatButtonTapped(_ sender: UIButton) {
-        // Implement live chat functionality if desired.
+        // Implement live chat functionality later.
     }
 }
 

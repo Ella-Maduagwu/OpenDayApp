@@ -11,7 +11,7 @@ class AddUserHelper {
     private let hardcodedPassword = "ELGZFO"
     private let hardcodedCourseName = "Computer Games"
 
-    // Function to create a new user, assign a course, and populate Firestore using hardcoded details
+    // Function to create a new user, assign a course, and manage other firestore operations 
     func createUser() {
         let email = hardcodedEmail
         let password = hardcodedPassword

@@ -69,7 +69,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                   showAlert(title: "Missing Information", message: "Both valid email and password are required.")
                   return
               }
-
+ 
               // Start sign-in process
               isSigningIn = true
               signInUser(email: email, password: password)
